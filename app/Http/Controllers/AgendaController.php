@@ -2,6 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Classroom;
+use App\Group;
+use App\Person;
+use App\Schedule;
+use App\ScheduleItem;
+use App\Student;
+use App\Teacher;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -18,54 +26,29 @@ class AgendaController extends Controller
         //
     }
 
-    public function get(Request $req) {
+    public function full(Request $req) {
+      if($validator->fails()) {
+          return var_dump($validator);
+      }
       $agenda = new \stdClass();
 
-      $agenda->groups = DB::table('group')->get()->all();
+      $agenda->groups = Group::all();
 
-      $agenda = $this->addMembers($agenda);
-      $agenda = $this->addSchedule($agenda);
-      $agenda = $this->addScheduleItems($agenda);
-
-      echo json_encode((array)$agenda);
-    }
-
-    private function getMembersFromAs(string $name, string $table) {
-      return DB::table($table)
-        ->join("person", "student.person_id", "person.id")
-        ->select('student.student_id', 'person.*')
-        ->where('person.group_id', $name)
-        ->get()
-        ->first();
-    }
-
-    private function addMembers(object $agenda) {
       foreach($agenda->groups as $group) {
-        if($group->isTeacherGroup === 0) {
-          $group->members = $this->getMembersFromAs($group->name, "student");
-        } else {
-          $group->members = $this->getMembersFromAs($group->name, "teacher");
-        }
-      }
+        $group->schedules = Schedule::GetById($group->schedule_id);
 
-      return $agenda;
-    }
-
-    private function addSchedule(object $agenda) {
-      foreach($agenda->groups as $group) {
-        $group->schedules = DB::table("schedule")->where("schedule.id", $group->schedule_id)->get()->all();
-      }
-
-      return $agenda;
-    }
-
-    private function addScheduleItems(object $agenda) {
-      foreach($agenda->groups as $group) {
         foreach($group->schedules as $schedule) {
-          $schedule->items = DB::table("schedule_item")->where("schedule_item.schedule_id", $group->schedule_id)->get()->all();
+          $schedule->items = ScheduleItem::getFromSchedule($group->schedule_id);
         }
+
+        if($group->isTeacherGroup === 0) {
+          $group->members = Student::getFromGroup($group->name);
+          continue;
+        }
+
+        $group->members = Teacher::getFromGroup($group->name);
       }
 
-      return $agenda;
+      echo json_encode($agenda);
     }
 }
