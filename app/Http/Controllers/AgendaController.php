@@ -27,9 +27,6 @@ class AgendaController extends Controller
     }
 
     public function full(Request $req) {
-      if($validator->fails()) {
-          return var_dump($validator);
-      }
       $agenda = new \stdClass();
 
       $agenda->groups = Group::all();
