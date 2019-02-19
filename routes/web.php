@@ -11,11 +11,11 @@
 |
 */
 
-// $router->get('/', function () use ($router) {
-//     return $router->app->version();
-// });
+ $router->get('/', function () use ($router) {
+     return $router->app->version();
+ });
 
-$router->get('/', [
+$router->get('/agenda', [
     'as' => 'agenda',
     'uses' => 'AgendaController@full'
 ]);
