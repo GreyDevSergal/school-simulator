@@ -18,6 +18,8 @@ class PersonTable extends Migration
             $table->string('name', 100);
             $table->string('gender', 100);
             $table->string('group_id', 4);
+            $table->timestamps();
+
         });
     }
 

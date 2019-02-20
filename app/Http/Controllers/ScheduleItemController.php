@@ -28,7 +28,14 @@ class ScheduleItemController extends Controller
       echo($data);
     }
 
-    public function update($data) {
-      Log::debug($data);
+    public function update(Request $data) {
+      $data = $data->input();
+
+      ScheduleItem::where('id', $data['id'])->update([
+        'start' => $data['start'],
+        'end' => $data['end'],
+        'name' => $data['name'],
+        'teacher_id' => $data['teacher']
+      ]);
     }
 }
