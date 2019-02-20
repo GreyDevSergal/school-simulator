@@ -35,6 +35,7 @@ class ScheduleItemController extends Controller
         'start' => $data['start'],
         'end' => $data['end'],
         'name' => $data['name'],
+        'classroom_id' => $data['classroom']['id'],
         'teacher_id' => $data['teacher']
       ]);
     }
