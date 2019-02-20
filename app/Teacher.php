@@ -16,4 +16,10 @@ class Teacher extends Model {
       ->first();
   }
 
+  public static function getById($id) {
+    return self::join("person", 'teacher.person_id', 'person.id')
+      ->select("person.*")
+      ->where('teacher_id', $id)->get()->first();
+  }
+
 }

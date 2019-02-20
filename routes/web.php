@@ -11,11 +11,29 @@
 |
 */
 
- $router->get('/', function () use ($router) {
-     return $router->app->version();
- });
+$router->get('/', function () use ($router) {
+    return $router->app->version();
+});
 
 $router->get('/agenda', [
     'as' => 'agenda',
     'uses' => 'AgendaController@full'
 ]);
+
+$router->group(['prefix' => 'group'], function () use ($router) {
+    $router->get('get/{name}', [
+        'uses' => 'GroupController@getByName'
+    ]);
+});
+
+// $router->group(['prefix' => 'schedule'], function() use ($router) {
+//     $router->group(['prefix' => 'item'], function() use ($router) {
+//         $router->post('delete/{id}', [
+//             'uses' => 'ScheduleItemController@delete'
+//         ]);
+
+//         $router->post('create', [
+//             'uses' => 'ScheduleItemController@create'
+//         ]);
+//     });
+// });

@@ -36,6 +36,9 @@ class AgendaController extends Controller
 
         foreach($group->schedules as $schedule) {
           $schedule->items = ScheduleItem::getFromSchedule($group->schedule_id);
+
+          foreach($schedule->items as $item)
+            $item->teacher = Teacher::getById($item->teacher_id);
         }
 
         if($group->isTeacherGroup === 0) {
