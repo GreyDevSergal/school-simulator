@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Log;
 use App\ScheduleItem;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -26,5 +26,9 @@ class ScheduleItemController extends Controller
 
     public function create($data) {
       echo($data);
+    }
+
+    public function update($data) {
+      Log::debug($data);
     }
 }
