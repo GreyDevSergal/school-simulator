@@ -15,6 +15,10 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/key', function() {
+    return str_random(32);
+});
+
 $router->get('/agenda', [
     'as' => 'agenda',
     'uses' => 'AgendaController@full'
@@ -26,14 +30,18 @@ $router->group(['prefix' => 'group'], function () use ($router) {
     ]);
 });
 
-// $router->group(['prefix' => 'schedule'], function() use ($router) {
-//     $router->group(['prefix' => 'item'], function() use ($router) {
-//         $router->post('delete/{id}', [
-//             'uses' => 'ScheduleItemController@delete'
-//         ]);
+$router->group(['prefix' => 'schedule'], function() use ($router) {
+    $router->group(['prefix' => 'item'], function() use ($router) {
+        $router->post('delete/{id}', [
+            'uses' => 'ScheduleItemController@delete'
+        ]);
 
-//         $router->post('create', [
-//             'uses' => 'ScheduleItemController@create'
-//         ]);
-//     });
-// });
+        $router->post('create', [
+            'uses' => 'ScheduleItemController@create'
+        ]);
+
+        $router->post('update/{id}', [
+            'uses' => 'ScheduleItemController@update'
+        ]);
+    });
+});

@@ -18,6 +18,8 @@ class GroupTable extends Migration
             $table->string('name', 100)->unique();
             $table->boolean('isTeacherGroup');
             $table->integer('schedule_id');
+            $table->timestamps();
+
         });
     }
 

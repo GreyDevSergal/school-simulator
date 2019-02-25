@@ -20,6 +20,8 @@ class ScheduleItemTable extends Migration
             $table->time('end');
             $table->string('classroom_id', 100);
             $table->integer('teacher_id');
+            $table->timestamps();
+
         });
     }
 
