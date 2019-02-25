@@ -38,6 +38,9 @@ class AgendaController extends Controller
           $schedule->items = ScheduleItem::getFromSchedule($group->schedule_id);
 
           foreach($schedule->items as $item)
+            $item->classroom = Classroom::where("id", $item->classroom_id)->get()->first();
+
+          foreach($schedule->items as $item)
             $item->teacher = Teacher::getById($item->teacher_id);
         }
 
