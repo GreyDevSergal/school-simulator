@@ -18,7 +18,7 @@ class Teacher extends Model {
 
   public static function getById($id) {
     return self::join("person", 'teacher.person_id', 'person.id')
-      ->select("person.*")
+      ->select("person.*", "teacher.*")
       ->where('teacher_id', $id)->get()->first();
   }
 
